@@ -1,8 +1,14 @@
 import React, { Component } from 'react'
 import './App.css'
-import { FormGroup, FormControl, InputGroup } from 'react-bootstrap'
+import { FormGroup, Input, InputGroup, InputGroupAddon } from 'reactstrap'
+import { FaSearch } from 'react-icons/fa'
 
 class App extends Component {
+
+  state = {
+    query: ''
+  }
+
   render() {
     return (
       <div className="App">
@@ -10,11 +16,18 @@ class App extends Component {
           <div className=".App-title">Music Player from App</div>
           <FormGroup>
             <InputGroup>
-              <FormControl
-                className="seachbar"
+              <Input
+                addon
                 type="text"
-                placeholder="Search for an artist"
+                placeholder="Search for an artist..."
+                query={this.state.query}
+                onChange={event => { this.setState({ query: event.target.value }) }}
               />
+              <InputGroupAddon
+                addonType="append"
+              >
+                <FaSearch />
+              </InputGroupAddon>
             </InputGroup>
           </FormGroup>
           <div className="Profile">
