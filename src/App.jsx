@@ -7,8 +7,8 @@ import { FaSearch } from 'react-icons/fa'
 class App extends Component {
 
   state = {
-    query: ''
-    // artist: null
+    query: '',
+    artist: null
   }
 
   search() {
@@ -20,9 +20,14 @@ class App extends Component {
     fetch(proxyurl + FETCH_URL)
       .then(response => response.json())
       // .then(json => console.log('json', json))
-      .then(json => {
-        const artist = json.artists.items[0]
-        console.log('artist', artist)
+      .then(response => {
+        // manipulating the json
+        const artistAlbums = response.data.map(x =>
+          ({
+            albumName: x.album.name,
+            artistName: x.artist.name
+          }));
+        console.log('artistAlbums', artistAlbums)
       })
   }
 
