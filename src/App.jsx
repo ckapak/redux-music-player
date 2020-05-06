@@ -2,13 +2,13 @@ import React, { Component } from 'react'
 import './App.css'
 import { FormGroup, Input, InputGroup, InputGroupAddon } from 'reactstrap'
 import { FaSearch } from 'react-icons/fa'
-// import Profile from './Profile'
+import Profile from './Profile'
 
 class App extends Component {
 
   state = {
     query: '',
-    artist: null
+    artists: [],
   }
 
   search() {
@@ -21,17 +21,25 @@ class App extends Component {
       .then(response => response.json())
       // .then(json => console.log('json', json))
       .then(response => {
+        const artists = {}
+        for (let track of response.data) {
+          artists[track.artist.id] = track.artist
+        }
         // manipulating the json
         const artistAlbums = response.data.map(x =>
           ({
             albumName: x.album.name,
-            artistName: x.artist.name
-          }));
+            artistName: x.artist.name,
+            artistId: x.artist.id,
+          }))
+
         console.log('artistAlbums', artistAlbums)
+        this.setState({ artistAlbums, artists: Object.values(artists) })
       })
   }
 
   render() {
+    const artists = this.state.artists
     return (
       <div className="App" >
         <div>
@@ -57,9 +65,9 @@ class App extends Component {
               </InputGroupAddon>
             </InputGroup>
           </FormGroup>
-          {/* <Profile
-            artist={this.state.artist}
-          /> */}
+          {artists.map((artist) => {
+            return <Profile key={artist.id} artist={artist} />
+          })}
 
         </div>
       </div>
